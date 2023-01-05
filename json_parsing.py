@@ -7,6 +7,6 @@ obj = json.loads(json_text)
 key = "messages"
 
 if key in obj and len(obj[key]) > 1:
-    print(obj[key][1])
+    print(obj[key][1]['message'])
 else:
-    print(f"Ключа {key} в JSON нет")
+    print(f"Ключа {key} в JSON нет, либо отсутствует ожидаемое сообщение")
