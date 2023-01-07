@@ -1,3 +1,4 @@
+import sys
 import time
 import requests
 import json
@@ -10,14 +11,15 @@ def state_check(obj):
             print("Job result:", obj['result'])
     elif 'error' in obj:
         print(obj['error'])
+        sys.exit()
     else:
         print('Warning! Unexpected server response')
 
 
 url = "https://playground.learnqa.ru/ajax/api/longtime_job"
 response1 = requests.get(url)  # запрос токена и времени до завершения задачи
-param = {"token": response1.json()['token']}
-# param = {"token": 'incorrect_token'}  # тест реакции на неверный токен
+# param = {"token": response1.json()['token']}
+param = {"token": 'incorrect_token'}  # тест реакции на неверный токен
 seconds = response1.json()['seconds']
 
 response2 = requests.get(url, params=param)  # запрос статуса задачи до ее завершения
