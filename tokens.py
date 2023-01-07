@@ -18,8 +18,8 @@ def state_check(obj):
 
 url = "https://playground.learnqa.ru/ajax/api/longtime_job"
 response1 = requests.get(url)  # запрос токена и времени до завершения задачи
-# param = {"token": response1.json()['token']}
-param = {"token": 'incorrect_token'}  # тест реакции на неверный токен
+param = {"token": response1.json()['token']}
+# param = {"token": 'incorrect_token'}  # тест реакции на неверный токен
 seconds = response1.json()['seconds']
 
 response2 = requests.get(url, params=param)  # запрос статуса задачи до ее завершения
