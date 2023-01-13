@@ -1,4 +1,5 @@
-import pytest
-
-phrase = input("Please, set a phrase shorter than 15 characters: ")
-assert len(phrase) < 15, "Your phrase is not shorter than 15 characters"
+class TestPhrase:
+    def test_check_phrase(self):
+        critical_len = 14
+        phrase = input(f"Please, set a phrase shorter than {critical_len} characters: ")
+        assert len(phrase) < critical_len, f"Your phrase is not shorter than {critical_len} characters"
