@@ -3,7 +3,11 @@ import requests
 
 
 class TestUserAgent:
-
+    params = (
+        'platform',
+        'browser',
+        'device'
+    )
     @pytest.mark.parametrize(
         ('user_agent', 'expected_values'), [
             (
@@ -33,7 +37,5 @@ class TestUserAgent:
         headers = {'User-Agent': user_agent}
 
         response = requests.get(url, headers=headers)
-
-        assert response.json()['platform'] == expected_values.get('platform'), 'Platform not equal to the expected value'
-        assert response.json()['browser'] == expected_values.get('browser'), 'Browser not equal to the expected value'
-        assert response.json()['device'] == expected_values.get('device'), 'Device not equal to the expected value'
+        for param in self.params:
+            assert response.json()[param] == expected_values.get(param), f"{param} not equal to the expected value"
