@@ -1,4 +1,7 @@
 import requests
+import allure
+from lib.logger import Logger
+from environment import ENV_OBJECT
 
 
 class MyRequests:
@@ -21,22 +24,30 @@ class MyRequests:
     @staticmethod
     def _send(url: str, data: dict, headers: dict, cookies: dict, method: str):
 
-        url = f"https://playground.learnqa.ru/api{url}"
+        url = f"{ENV_OBJECT.get_base_url()}{url}"
 
         if headers is None:
             headers = {}
         if cookies is None:
             cookies = {}
 
+        Logger.add_request(url, data, headers, cookies, method)
+
         if method == 'GET':
-            response = requests.get(url, params=data, headers=headers, cookies=cookies)
+            with allure.step(f"GET request to URL '{url}"):
+                response = requests.get(url, params=data, headers=headers, cookies=cookies)
         elif method == 'POST':
-            response = requests.post(url, data=data, headers=headers, cookies=cookies)
+            with allure.step(f"POST request to URL '{url}"):
+                response = requests.post(url, data=data, headers=headers, cookies=cookies)
         elif method == 'PUT':
-            response = requests.put(url, data=data, headers=headers, cookies=cookies)
+            with allure.step(f"PUT request to URL '{url}"):
+                response = requests.put(url, data=data, headers=headers, cookies=cookies)
         elif method == 'DELETE':
-            response = requests.delete(url, data=data, headers=headers, cookies=cookies)
+            with allure.step(f"DELETE request to URL '{url}"):
+                response = requests.delete(url, data=data, headers=headers, cookies=cookies)
         else:
             raise Exception(f"Bad HTTP method '{method}' was received")
+
+        Logger.add_response(response)
 
         return response

@@ -1,10 +1,14 @@
+import allure
 import pytest
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 
+@allure.epic('User deletion cases')
 class TestUserDelete(BaseCase):
+    @allure.title('Check test user deletion failure')
+    @allure.description('This test verifies that the test user cannot be deleted')
     def test_delete_test_user(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -36,6 +40,8 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response3, 200)
 
+    @allure.title('Check just created user deletion failure')
+    @allure.description('This test verifies that just created user can be deleted')
     def test_delete_just_create_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -74,6 +80,8 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response4, 404)
 
+    @allure.title('Check just created user deletion failure by another user')
+    @allure.description("This test verifies that just created user can't be deleted by another user")
     def test_delete_just_create_user_by_another_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -109,5 +117,4 @@ class TestUserDelete(BaseCase):
                                    )
 
         Assertions.assert_code_status(response4, 200)
-
 

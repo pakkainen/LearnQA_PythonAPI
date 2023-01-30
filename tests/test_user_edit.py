@@ -1,9 +1,14 @@
+import allure
+
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 
+@allure.epic("User editing cases")
 class TestUserEdit(BaseCase):
+    @allure.title('Check just created user editing by himself')
+    @allure.description("This test checks that the just created user can be edited by himself")
     def test_edit_just_create_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -44,6 +49,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_json_value_by_name(response4, 'firstName', new_name, "Wrong name of user after edit")
 
+    @allure.title('Check just created user editing failure by unauthorized user')
+    @allure.description("This test checks that the just created user can't be edited by unauthorized user")
     def test_edit_just_create_user_by_unauthorized_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -63,6 +70,8 @@ class TestUserEdit(BaseCase):
             assert response2.content.decode("utf-8") == f"Auth token not supplied", \
                 f"Unexpected response result {response2.content}"
 
+    @allure.title('Check just created user editing failure by another user')
+    @allure.description("This test checks that the just created user can't be edited by another user")
     def test_edit_just_create_user_by_another_user(self):
         # REGISTER_TEST_USER
         register_data = self.prepare_registration_data()
@@ -112,6 +121,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_json_value_by_name(response5, 'username', test_user_username,
                                              'Registered user can edit unregistered user')
 
+    @allure.title('Check failure to change email to new one without at')
+    @allure.description("This test checks that the just created user can't change email to a new one without @")
     def test_edit_authorized_user_email_without_at(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -155,6 +166,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_json_value_by_name(response4, 'email', email,
                                              f"The user's email has been changed to an invalid email: {invalid_email}")
 
+    @allure.title('Check failure to change name to one symbol')
+    @allure.description("This test checks that the just created user can't change his name to one symbol")
     def test_edit_authorized_user_firstname_to_one_symbol(self):
         # REGISTER
         register_data = self.prepare_registration_data()

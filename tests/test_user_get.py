@@ -1,15 +1,23 @@
+import allure
+
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 
+@allure.epic("Getting user info cases")
 class TestUserGet(BaseCase):
+    @allure.title('Check to GET username from user id')
+    @allure.description("This test checks that the unauthorized user can GET username from a user id")
     def test_get_user_details_not_auth(self):
         response = MyRequests.get("/user/2")
 
         unexpected_fields = ['email', 'firstName', 'lastName']
         Assertions.assert_json_has_unfamiliar_user_key(response, 'username', unexpected_fields)
 
+    @allure.title('Check to GET user info by himself')
+    @allure.description("This test checks that the authorized user"
+                        " can GET his info (username, email, firstName, lastName)")
     def test_get_user_details_auth_as_same_user(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -30,6 +38,8 @@ class TestUserGet(BaseCase):
         expected_fields = ['username', 'email', 'firstName', 'lastName']
         Assertions.assert_json_has_keys(response2, expected_fields)
 
+    @allure.title('Checking authorized user access only to username of another user')
+    @allure.description("This test checks that the authorized user can only GET username from another user id")
     def test_get_user_details_auth_as_another_user(self):
         data = {
             'email': 'vinkotov@example.com',
